@@ -10,9 +10,6 @@ def get_search_history():
     user_id = request.args.get('user_id')
     limit = request.args.get('limit', 10, type=int)
     
-    if not user_id:
-        return jsonify({'status': 'error', 'message': '用户 ID 不能为空'}), 400
-    
     try:
         history = search_service.get_search_history(user_id, limit)
         return jsonify({

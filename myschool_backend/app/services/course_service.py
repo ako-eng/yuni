@@ -41,11 +41,14 @@ class CourseService:
     def _deserialize_list(self, data):
         return json.loads(data) if data else []
     
-    def get_courses(self, user_id):
+    def get_courses(self, user_id=None):
         """获取用户的课程表"""
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM courses WHERE user_id = ? ORDER BY day_of_week, start_period', (user_id,))
+            if user_id:
+                cursor.execute('SELECT * FROM courses WHERE user_id = ? ORDER BY day_of_week, start_period', (user_id,))
+            else:
+                cursor.execute('SELECT * FROM courses ORDER BY day_of_week, start_period')
             courses = cursor.fetchall()
             
             result = []

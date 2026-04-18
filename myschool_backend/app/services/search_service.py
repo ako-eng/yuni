@@ -37,16 +37,23 @@ class SearchService:
     def _get_connection(self):
         return sqlite3.connect(self.db_path)
     
-    def get_search_history(self, user_id, limit=10):
+    def get_search_history(self, user_id=None, limit=10):
         """获取用户的搜索历史"""
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute('''
-                SELECT keyword, search_time FROM search_history 
-                WHERE user_id = ? 
-                ORDER BY search_time DESC 
-                LIMIT ?
-            ''', (user_id, limit))
+            if user_id:
+                cursor.execute('''
+                    SELECT keyword, search_time FROM search_history 
+                    WHERE user_id = ? 
+                    ORDER BY search_time DESC 
+                    LIMIT ?
+                ''', (user_id, limit))
+            else:
+                cursor.execute('''
+                    SELECT keyword, search_time FROM search_history 
+                    ORDER BY search_time DESC 
+                    LIMIT ?
+                ''', (limit,))
             history = cursor.fetchall()
             
             result = []

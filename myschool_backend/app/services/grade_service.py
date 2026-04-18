@@ -32,11 +32,14 @@ class GradeService:
     def _get_connection(self):
         return sqlite3.connect(self.db_path)
     
-    def get_grades(self, user_id):
+    def get_grades(self, user_id=None):
         """获取用户的成绩列表"""
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM grades WHERE user_id = ? ORDER BY semester DESC', (user_id,))
+            if user_id:
+                cursor.execute('SELECT * FROM grades WHERE user_id = ? ORDER BY semester DESC', (user_id,))
+            else:
+                cursor.execute('SELECT * FROM grades ORDER BY semester DESC')
             grades = cursor.fetchall()
             
             result = []

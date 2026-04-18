@@ -31,11 +31,14 @@ class AwardService:
     def _get_connection(self):
         return sqlite3.connect(self.db_path)
     
-    def get_awards(self, user_id):
+    def get_awards(self, user_id=None):
         """获取用户的获奖列表"""
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM awards WHERE user_id = ? ORDER BY date DESC', (user_id,))
+            if user_id:
+                cursor.execute('SELECT * FROM awards WHERE user_id = ? ORDER BY date DESC', (user_id,))
+            else:
+                cursor.execute('SELECT * FROM awards ORDER BY date DESC')
             awards = cursor.fetchall()
             
             result = []

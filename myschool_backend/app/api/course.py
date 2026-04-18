@@ -9,9 +9,6 @@ def get_courses():
     """获取用户的课程表"""
     user_id = request.args.get('user_id')
     
-    if not user_id:
-        return jsonify({'status': 'error', 'message': '用户 ID 不能为空'}), 400
-    
     try:
         courses = course_service.get_courses(user_id)
         return jsonify({

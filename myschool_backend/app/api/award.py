@@ -9,9 +9,6 @@ def get_awards():
     """获取用户的获奖列表"""
     user_id = request.args.get('user_id')
     
-    if not user_id:
-        return jsonify({'status': 'error', 'message': '用户 ID 不能为空'}), 400
-    
     try:
         awards = award_service.get_awards(user_id)
         return jsonify({

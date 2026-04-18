@@ -9,9 +9,6 @@ def get_exams():
     """获取用户的考试列表"""
     user_id = request.args.get('user_id')
     
-    if not user_id:
-        return jsonify({'status': 'error', 'message': '用户 ID 不能为空'}), 400
-    
     try:
         exams = exam_service.get_exams(user_id)
         return jsonify({

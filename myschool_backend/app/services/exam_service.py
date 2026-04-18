@@ -31,11 +31,14 @@ class ExamService:
     def _get_connection(self):
         return sqlite3.connect(self.db_path)
     
-    def get_exams(self, user_id):
+    def get_exams(self, user_id=None):
         """获取用户的考试列表"""
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM exams WHERE user_id = ? ORDER BY exam_date ASC', (user_id,))
+            if user_id:
+                cursor.execute('SELECT * FROM exams WHERE user_id = ? ORDER BY exam_date ASC', (user_id,))
+            else:
+                cursor.execute('SELECT * FROM exams ORDER BY exam_date ASC')
             exams = cursor.fetchall()
             
             result = []
